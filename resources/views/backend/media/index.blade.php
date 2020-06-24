@@ -18,7 +18,8 @@
             media_dz_upload_url="{{ route('admin.media-file.store') }}"
             media_contents="{{ route('admin.media.contents') }}"
             media_remove_selected_files="{{ route('admin.media.destroy.files') }}"
-            media_store_folder = "{{ route('admin.media-folder.store') }}">
+            media_store_folder="{{ route('admin.media-folder.store') }}"
+            media_rename_folder="{{ route('admin.media-folder.update', 1) }}">
             <template #folder-add-icon><x-zondicon-folder-outline-add/></template>
             <template #folder-icon><x-heroicon-s-folder /></template>
             <template #view-list-icon><x-zondicon-list-bullet /></template>

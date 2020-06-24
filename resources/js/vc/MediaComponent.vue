@@ -85,7 +85,7 @@
 
 	            <div>
 	                <div class="folder-lists flex flex-wrap -mx-3 my-5">
-	                    <MediaFolder v-for="folder in media.folders" :folder="folder" :key="folder.id" @insideDblClick="on_folder_dblclicked">
+	                    <MediaFolder v-for="folder in media.folders" :folder="folder" :updateFolder="media_rename_folder" :key="folder.id" @insideDblClick="on_folder_dblclicked">
 	                    	<template #folder-icon-sub-component>
 	                    		<slot name="folder-icon"></slot>
 	                    	</template>
@@ -123,7 +123,8 @@
             'media_dz_upload_url',
             'media_contents',
             'media_remove_selected_files',
-            'media_store_folder'
+            'media_store_folder',
+            'media_rename_folder'
         ],
 
         components : {

@@ -5168,7 +5168,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['media_dz_upload_url', 'media_contents', 'media_remove_selected_files', 'media_store_folder'],
+  props: ['media_dz_upload_url', 'media_contents', 'media_remove_selected_files', 'media_store_folder', 'media_rename_folder'],
   components: {
     MediaFile: _MediaFileComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     MediaFolder: _MediaFolderComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -5462,15 +5462,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['folder'],
+  props: ['folder', 'updateFolder'],
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   data: function data() {
     return {
-      folder_option_visibility: false
+      folder_option_visibility: false,
+      folder_item_editable: false,
+      folder_name_alt: this.folder.name
     };
   },
   methods: {
@@ -5483,6 +5492,46 @@ __webpack_require__.r(__webpack_exports__);
     option_away: function option_away() {
       // click away function
       this.folder_option_visibility = false;
+    },
+    onRenameClicked: function onRenameClicked() {
+      var _this = this;
+
+      this.folder_item_editable = true;
+      this.folder_option_visibility = false;
+      this.$nextTick(function () {
+        _this.$refs.name.focus();
+      });
+    },
+    onRenameSubmit: function onRenameSubmit(folderID) {
+      var _this2 = this;
+
+      var raw_updateLink = this.updateFolder;
+      var updateLink = raw_updateLink.substring(0, raw_updateLink.lastIndexOf("/") + 1) + folderID;
+      var dataform = new FormData();
+      dataform.append("_method", 'PATCH');
+      dataform.append('name', this.folder_name_alt);
+      dataform.append('parent', this.folder.parent); // dataform.append('method', 'PUT');
+
+      axios.post(updateLink, dataform).then(function (response) {
+        if (response.data.success) {
+          new Noty({
+            type: 'twSuccess',
+            title: 'Success',
+            text: 'Successfully created new folder name ' + response.data.folder.name
+          }).show();
+          _this2.folder_item_editable = false;
+          _this2.folder.name = _this2.folder_name_alt;
+        }
+      })["catch"](function (error) {
+        var getError = error.response.data.errors;
+        new Noty({
+          type: 'twDanger',
+          title: 'Error',
+          text: getError.name
+        }).show();
+        _this2.folder_item_editable = false;
+        _this2.folder_name_alt = _this2.folder.name;
+      });
     }
   }
 });
@@ -38830,7 +38879,10 @@ var render = function() {
             _vm._l(_vm.media.folders, function(folder) {
               return _c("MediaFolder", {
                 key: folder.id,
-                attrs: { folder: folder },
+                attrs: {
+                  folder: folder,
+                  updateFolder: _vm.media_rename_folder
+                },
                 on: { insideDblClick: _vm.on_folder_dblclicked },
                 scopedSlots: _vm._u(
                   [
@@ -39117,9 +39169,50 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "mx-3 font-medium text-white" }, [
-          _vm._v(
-            "\n                " + _vm._s(_vm.folder.name) + "\n            "
-          )
+          !_vm.folder_item_editable
+            ? _c("span", [_vm._v(_vm._s(_vm.folder.name))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.folder_item_editable
+            ? _c("div", [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.onRenameSubmit(_vm.folder.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.folder_name_alt,
+                          expression: "folder_name_alt"
+                        }
+                      ],
+                      ref: "name",
+                      staticClass:
+                        "rounded border border-gray-500 w-full p-2 font-bold text-xs appearance-none outline-none focus:border-indigo-200 text-gray-700",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.folder_name_alt },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.folder_name_alt = $event.target.value
+                        }
+                      }
+                    })
+                  ]
+                )
+              ])
+            : _vm._e()
         ]),
         _vm._v(" "),
         _c(
@@ -39167,7 +39260,8 @@ var render = function() {
                     {
                       staticClass:
                         "block px-2 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100",
-                      attrs: { href: "javascript:;" }
+                      attrs: { href: "javascript:;" },
+                      on: { click: _vm.onRenameClicked }
                     },
                     [_vm._v("Rename")]
                   ),

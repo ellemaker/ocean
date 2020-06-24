@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\MediaFolder;
 use Illuminate\Http\Request;
 use App\Http\Requests\Media\FolderStoreRequest;
+use App\Http\Requests\Media\FolderUpdateRequest;
 
 class MediaFolderController extends Controller
 {
@@ -59,7 +60,7 @@ class MediaFolderController extends Controller
      */
     public function show(MediaFolder $mediaFolder)
     {
-        //
+        
     }
 
     /**
@@ -80,9 +81,13 @@ class MediaFolderController extends Controller
      * @param  \App\MediaFolder  $mediaFolder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MediaFolder $mediaFolder)
+    public function update(FolderUpdateRequest $request, MediaFolder $mediaFolder)
     {
-        //
+
+        $mediaFolder->name = $request->name;
+        $mediaFolder->save();
+
+        return response()->json(['success' => true, 'folder' => $mediaFolder]);
     }
 
     /**
