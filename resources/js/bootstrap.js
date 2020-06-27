@@ -10,6 +10,7 @@ window.Vue = require('vue');
 window.$ = window.jQuery = require('jquery');
 
 window.Noty = require('Noty');
+require("@fancyapps/fancybox");
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

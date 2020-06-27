@@ -34,9 +34,9 @@
 	    			
 	    		</li>
 	    	</ul>
-	    	<div>
-	    		<button type="button" @click="cancel_file_lists_selected">cancel</button>
-	    		<button type="button" @click="media_files_destroy_function">delete all files</button>
+	    	<div class="flex justify-between">
+	    		<button class="capitalize bg-gray-200 font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-gray-300" type="button" @click="cancel_file_lists_selected">cancel</button>
+	    		<button class="capitalize bg-red-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600" type="button" @click="media_files_destroy_function">delete all files</button>
 	    	</div>
 	    	
 	    </div>
@@ -85,7 +85,7 @@
 
 	            <div>
 	                <div class="folder-lists flex flex-wrap -mx-3 my-5">
-	                    <MediaFolder v-for="folder in media.folders" :folder="folder" :updateFolder="media_rename_folder" :key="folder.id" @insideDblClick="on_folder_dblclicked">
+	                    <MediaFolder v-for="folder in media.folders" :folder="folder" :updateFolder="media_rename_folder" :key="folder.id" @insideDblClick="on_folder_dblclicked" @deleteFolder="on_folder_delete">
 	                    	<template #folder-icon-sub-component>
 	                    		<slot name="folder-icon"></slot>
 	                    	</template>
@@ -124,7 +124,8 @@
             'media_contents',
             'media_remove_selected_files',
             'media_store_folder',
-            'media_rename_folder'
+            'media_rename_folder',
+            'media_delete_folder'
         ],
 
         components : {
@@ -152,7 +153,6 @@
             });
 
             dz.on("sending", function(file, xhr, formData) {
-            	console.log(this.media.current_directory.slug);
                 formData.append("_token", CSRF_TOKEN);
                 formData.append("collection", this.media.current_directory.slug);
                 formData.append("category", this.media.current_directory.id);
@@ -197,16 +197,14 @@
 
 	 			this.media.current_directory.id = cd;
 
-	 			const mc = this.media_contents + '/' + cd;
+	 			var mc = this.media_contents + '/' + cd;
 
                 axios.get(mc).then( response => {
 
                 	this.media.folders = response.data.folderLists;
                 	this.media.files = response.data.folderFiles;
 
-                	// console.log(response.data.folderCurrent);
-
-                	const fc = response.data.folderCurrent.slice().reverse();
+                	var fc = response.data.folderCurrent.slice().reverse();
                     this.directory_breadcrumbs_function(fc);
 
                     this.media.current_directory.slug = fc[fc.length - 1].slug;
@@ -258,8 +256,8 @@
 
 
 	 		media_files_destroy_function(){
-	 			const dataform = new FormData();
-	 			const fileList = JSON.stringify(this.file_lists_selected);
+	 			var dataform = new FormData();
+	 			var fileList = JSON.stringify(this.file_lists_selected);
 
                 dataform.append('files', fileList);
 
@@ -277,7 +275,7 @@
 			},
 
 			create_folder_form_submit(){
-				const dataform = new FormData();
+				var dataform = new FormData();
 
 
 
@@ -298,7 +296,6 @@
 						}).show();
                    	}
 
-                   	console.log(response)
                 }).catch(error => {
 				    var getError = error.response.data.errors;
 				    new Noty({
@@ -311,8 +308,31 @@
 
 			on_folder_dblclicked (folderID){
 				this.get_media_function(folderID);
+			},
 
+			on_folder_delete (df){
+
+				var url = this.media_delete_folder;
+				url = url.split('/');
+				url.pop();
+				url = url.toString().replace(/,/g, '/') + '/' + df.id;
+
+				axios.delete(url).then( response => {
+
+					this.get_media_function(this.media.current_directory.id);
+
+					$.fancybox.close();
+
+					new Noty({
+					  	type: 'twInfo',
+					  	title: 'Info',
+					  	text: 'You have permanently delete this folder ' + df.name
+					}).show();
+
+				});
+				
 			}
+
 	 	}
 	 }
 

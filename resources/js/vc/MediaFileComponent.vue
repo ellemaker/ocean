@@ -4,14 +4,14 @@
 		:class="{'w-1/5' : fileView, 'w-full' : !fileView}"
 		v-click-outside="file_unselect_function">
 
-		<div class="file-control-multi absolute top-0 left-0 mt-4 ml-6 w-6 h-6 z-10 rounded-md border-2 border-indigo-600" :class="{'bg-indigo-600' : mfile_active}" @click="multi_file_select_function(file)"></div>
+		<div class="cursor-pointer file-control-multi absolute top-0 left-0 mt-4 ml-6 w-6 h-6 z-10 rounded-md border-2 border-indigo-600" :class="{'bg-indigo-600' : mfile_active}" @click="multi_file_select_function(file)"></div>
 
 
         <a href="javascript:;" class="block p-3 bg-gray-300 rounded-md relative" :class="{'active' : file_active}"  @click="file_selected_function(file)">
             <div v-if="fileView" class="mb-3">
             	<img :src="file.thumbnail" :alt="file.name" :title="file.name" class="max-w-full mx-auto">
             </div>
-            <div class="text-center font-medium">{{ file.name }}</div>
+            <div class="text-center font-medium">{{ file.name }} - {{ file.media[0].file_name.split('.')[file.media[0].file_name.split('.').length - 1] }}</div>
         </a>
 
 

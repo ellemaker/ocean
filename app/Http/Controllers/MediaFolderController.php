@@ -98,6 +98,8 @@ class MediaFolderController extends Controller
      */
     public function destroy(MediaFolder $mediaFolder)
     {
-        //
+        $mediaFolder->delete();
+
+        return response()->json(['success' => true, 'folder' => $mediaFolder]);
     }
 }
