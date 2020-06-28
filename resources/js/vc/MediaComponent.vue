@@ -28,10 +28,11 @@
 	    	:class="{'translate-x-0 shadow-md' : file_lists_selected.length > 0, 'translate-x-full' : file_lists_selected.length == 0}">
 	    	<h3 class="font-medium text-lg mb-5">Selected Files</h3>
 	    	<ul>
-	    		<li v-for="file in file_lists_selected" :key="file.id" class="flex flex-wrap items-center rounded border-2 border-indigo-300 py-3 px-2 mb-5">
-	    			<div><img :src="file.thumbnail" :alt="file.name" :title="file.name" class="w-10"></div>
-	    			<div class="ml-3 font-medium text-sm">{{ file.name }}</div>
-	    			
+	    		<li v-for="file in file_lists_selected" :key="file.id" class="flex items-center rounded border-2 border-gray-200 py-3 px-2 mb-5 shadow">
+	    			<div class="w-16">
+	    				<MediaFileThumb :thumb="file" ></MediaFileThumb>
+	    			</div>
+	    			<div class="pl-3 font-medium text-sm">{{ file.name }}</div>
 	    		</li>
 	    	</ul>
 	    	<div class="flex justify-between">
@@ -95,7 +96,7 @@
 	                    </MediaFolder>
 	                </div>
 
-	                <div class="file-lists flex flex-wrap items-baseline -mx-2">
+	                <div class="file-lists flex flex-wrap items-stretch -mx-2">
 	                    <MediaFile v-for="file in media.files" :key="file.id" :file="file" :fileView="media.current_view" @fileLists="file_lists_selected_function" ref="myMediaFile">	                    	
 	                    </MediaFile>
 	                </div>
@@ -164,6 +165,10 @@
 
             this.get_media_function(this.media.current_directory.id);
 	 	},
+
+	 	beforeCreate(){
+        	this.$options.components.MediaFileThumb = require('./MediaFileThumbnailComponent.vue').default
+        },
 
 	 	data() {
 	 		return {

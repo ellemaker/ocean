@@ -18,7 +18,7 @@
                                 {{ __('E-Mail Address') }}:
                             </label>
 
-                            <input id="email" type="email" class="form-input w-full @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" value="ellebarde@gmail.com" type="email" class="form-input w-full @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                             @error('email')
                                 <p class="text-red-500 text-xs italic mt-4">
@@ -32,7 +32,7 @@
                                 {{ __('Password') }}:
                             </label>
 
-                            <input id="password" type="password" class="form-input w-full @error('password') border-red-500 @enderror" name="password" required>
+                            <input id="password" value="password" type="password" class="form-input w-full @error('password') border-red-500 @enderror" name="password" required>
 
                             @error('password')
                                 <p class="text-red-500 text-xs italic mt-4">

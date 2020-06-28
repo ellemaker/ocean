@@ -40,7 +40,7 @@ class MediaController extends Controller
 
 		foreach ($file_lists as $file) {
 			$query = MediaFile::find($file['id']);
-			$query->delete();
+			$query->forceDelete();
 		}
 
 		return response()->json(['success' => true]);

@@ -10805,6 +10805,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 
 
@@ -10838,6 +10839,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.get_media_function(this.media.current_directory.id);
     }.bind(this));
     this.get_media_function(this.media.current_directory.id);
+  },
+  beforeCreate: function beforeCreate() {
+    this.$options.components.MediaFileThumb = __webpack_require__(/*! ./MediaFileThumbnailComponent.vue */ "./resources/js/vc/MediaFileThumbnailComponent.vue")["default"];
   },
   data: function data() {
     return {
@@ -11002,6 +11006,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
 /* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+var _props$mounted$before;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11049,9 +11063,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({
+/* harmony default export */ __webpack_exports__["default"] = (_props$mounted$before = {
   props: ['file', 'fileView'],
   mounted: function mounted() {},
+  beforeCreate: function beforeCreate() {
+    this.$options.components.MediaFileThumb = __webpack_require__(/*! ./MediaFileThumbnailComponent.vue */ "./resources/js/vc/MediaFileThumbnailComponent.vue")["default"];
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   },
@@ -11060,23 +11077,80 @@ __webpack_require__.r(__webpack_exports__);
       file_active: false,
       mfile_active: false
     };
-  },
-  methods: {
-    file_selected_function: function file_selected_function(file) {
-      this.file_active = !this.file_active;
-    },
-    file_unselect_function: function file_unselect_function() {
-      // click away function
-      this.file_active = false;
-    },
-    multi_file_select_function: function multi_file_select_function(file) {
-      this.mfile_active = !this.mfile_active;
-      this.$emit("fileLists", file);
-    },
-    cancel_file_selected: function cancel_file_selected(files) {
-      this.mfile_active = false;
-    }
   }
+}, _defineProperty(_props$mounted$before, "mounted", function mounted() {}), _defineProperty(_props$mounted$before, "methods", {
+  file_selected_function: function file_selected_function(file) {
+    this.file_active = !this.file_active;
+  },
+  file_unselect_function: function file_unselect_function() {
+    // click away function
+    this.file_active = false;
+  },
+  multi_file_select_function: function multi_file_select_function(file) {
+    this.mfile_active = !this.mfile_active;
+    this.$emit("fileLists", file);
+  },
+  cancel_file_selected: function cancel_file_selected(files) {
+    this.mfile_active = false;
+  }
+}), _props$mounted$before);
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "MediaFileThumb",
+  props: ['thumb']
 });
 
 /***/ }),
@@ -44340,21 +44414,17 @@ var render = function() {
               {
                 key: file.id,
                 staticClass:
-                  "flex flex-wrap items-center rounded border-2 border-indigo-300 py-3 px-2 mb-5"
+                  "flex items-center rounded border-2 border-gray-200 py-3 px-2 mb-5 shadow"
               },
               [
-                _c("div", [
-                  _c("img", {
-                    staticClass: "w-10",
-                    attrs: {
-                      src: file.thumbnail,
-                      alt: file.name,
-                      title: file.name
-                    }
-                  })
-                ]),
+                _c(
+                  "div",
+                  { staticClass: "w-16" },
+                  [_c("MediaFileThumb", { attrs: { thumb: file } })],
+                  1
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "ml-3 font-medium text-sm" }, [
+                _c("div", { staticClass: "pl-3 font-medium text-sm" }, [
                   _vm._v(_vm._s(file.name))
                 ])
               ]
@@ -44616,7 +44686,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "file-lists flex flex-wrap items-baseline -mx-2" },
+            { staticClass: "file-lists flex flex-wrap items-stretch -mx-2" },
             _vm._l(_vm.media.files, function(file) {
               return _c("MediaFile", {
                 key: file.id,
@@ -44696,7 +44766,7 @@ var render = function() {
       _c(
         "a",
         {
-          staticClass: "block p-3 bg-gray-300 rounded-md relative",
+          staticClass: "block p-3 bg-gray-300 rounded-md relative h-full",
           class: { active: _vm.file_active },
           attrs: { href: "javascript:;" },
           on: {
@@ -44707,27 +44777,17 @@ var render = function() {
         },
         [
           _vm.fileView
-            ? _c("div", { staticClass: "mb-3" }, [
-                _c("img", {
-                  staticClass: "max-w-full mx-auto",
-                  attrs: {
-                    src: _vm.file.thumbnail,
-                    alt: _vm.file.name,
-                    title: _vm.file.name
-                  }
-                })
-              ])
+            ? _c(
+                "div",
+                { staticClass: "mb-3" },
+                [_c("MediaFileThumb", { attrs: { thumb: _vm.file } })],
+                1
+              )
             : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "text-center font-medium" }, [
+          _c("div", { staticClass: "text-center font-medium text-sm" }, [
             _vm._v(
-              _vm._s(_vm.file.name) +
-                " - " +
-                _vm._s(
-                  _vm.file.media[0].file_name.split(".")[
-                    _vm.file.media[0].file_name.split(".").length - 1
-                  ]
-                )
+              "\n            \t" + _vm._s(_vm.file.name) + "\n            "
             )
           ])
         ]
@@ -44744,99 +44804,366 @@ var render = function() {
           }
         },
         [
-          _c("header", { staticClass: "bg-gray-300 p-10" }, [
-            _c("img", {
-              staticClass: "max-w-full mx-auto",
-              attrs: {
-                src: _vm.file.thumbnail,
-                alt: _vm.file.name,
-                title: _vm.file.name
-              }
-            })
-          ]),
+          _c(
+            "header",
+            { staticClass: "bg-gray-300 p-10" },
+            [_c("MediaFileThumb", { attrs: { thumb: _vm.file } })],
+            1
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "px-10 py-12" }, [
-            _c("div", { staticClass: "mb-8" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "inline-block font-medium text-gray-700",
-                  attrs: { for: "" }
-                },
-                [_vm._v("Alt")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass:
-                  "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
-                attrs: { type: "text" },
-                domProps: { value: _vm.file.alt }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mb-8" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "inline-block font-medium text-gray-700",
-                  attrs: { for: "" }
-                },
-                [_vm._v("Title")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass:
-                  "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
-                attrs: { type: "text" },
-                domProps: { value: _vm.file.title }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mb-8" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "inline-block font-medium text-gray-700",
-                  attrs: { for: "" }
-                },
-                [_vm._v("Image URL")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass:
-                  "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
-                attrs: { type: "text" },
-                domProps: { value: _vm.file.original }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mb-8" }, [
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      _vm.file_active = false
-                    }
-                  }
-                },
-                [_vm._v("Cancel")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
+          _c("div", { staticClass: "px-8 py-12" }, [
+            _c("form", { attrs: { action: "" } }, [
+              _c("div", { staticClass: "mb-8" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass:
+                      "inline-block font-medium text-gray-700 text-sm",
+                    attrs: { for: "" }
+                  },
+                  [_vm._v("Title")]
+                ),
+                _vm._v(" "),
+                _c("input", {
                   staticClass:
-                    "bg-indigo-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600"
-                },
-                [_vm._v("Save")]
-              )
+                    "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.file.title }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mb-8" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass:
+                      "inline-block font-medium text-gray-700 text-sm",
+                    attrs: { for: "" }
+                  },
+                  [_vm._v("Alt")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass:
+                    "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.file.alt }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mb-8" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass:
+                      "inline-block font-medium text-gray-700 text-sm",
+                    attrs: { for: "" }
+                  },
+                  [_vm._v("Image URL")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass:
+                    "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.file.original }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mb-8 flex justify-between" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "capitalize bg-gray-200 font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-gray-300",
+                    on: {
+                      click: function($event) {
+                        _vm.file_active = false
+                      }
+                    }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-indigo-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600"
+                  },
+                  [_vm._v("Save")]
+                )
+              ])
             ])
           ])
         ]
       )
     ]
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.thumb.extension === "jpg" || _vm.thumb.extension === "png"
+      ? _c("div", [
+          _c("img", {
+            staticClass: "max-w-full mx-auto",
+            attrs: {
+              src: _vm.thumb.thumbnail,
+              alt: _vm.thumb.name,
+              title: _vm.thumb.name
+            }
+          })
+        ])
+      : _vm.thumb.extension === "pdf"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "mp4" ||
+        _vm.thumb.extension === "mov" ||
+        _vm.thumb.extension === "wmv" ||
+        _vm.thumb.extension === "avi" ||
+        _vm.thumb.extension === "webm" ||
+        _vm.thumb.extension === "ogg"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M384 121.941V128H256V0h6.059c6.365 0 12.47 2.529 16.971 7.029l97.941 97.941A24.005 24.005 0 0 1 384 121.941zM224 136V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248c-13.2 0-24-10.8-24-24zm96 144.016v111.963c0 21.445-25.943 31.998-40.971 16.971L224 353.941V392c0 13.255-10.745 24-24 24H88c-13.255 0-24-10.745-24-24V280c0-13.255 10.745-24 24-24h112c13.255 0 24 10.745 24 24v38.059l55.029-55.013c15.011-15.01 40.971-4.491 40.971 16.97z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "rar" || _vm.thumb.extension === "zip"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zM128.4 336c-17.9 0-32.4 12.1-32.4 27 0 15 14.6 27 32.5 27s32.4-12.1 32.4-27-14.6-27-32.5-27zM224 136V0h-63.6v32h-32V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zM95.9 32h32v32h-32zm32.3 384c-33.2 0-58-30.4-51.4-62.9L96.4 256v-32h32v-32h-32v-32h32v-32h-32V96h32V64h32v32h-32v32h32v32h-32v32h32v32h-32v32h22.1c5.7 0 10.7 4.1 11.8 9.7l17.3 87.7c6.4 32.4-18.4 62.6-51.4 62.6z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "mp3"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm-64 268c0 10.7-12.9 16-20.5 8.5L104 376H76c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h28l35.5-36.5c7.6-7.6 20.5-2.2 20.5 8.5v136zm33.2-47.6c9.1-9.3 9.1-24.1 0-33.4-22.1-22.8 12.2-56.2 34.4-33.5 27.2 27.9 27.2 72.4 0 100.4-21.8 22.3-56.9-10.4-34.4-33.5zm86-117.1c54.4 55.9 54.4 144.8 0 200.8-21.8 22.4-57-10.3-34.4-33.5 36.2-37.2 36.3-96.5 0-133.8-22.1-22.8 12.3-56.3 34.4-33.5zM384 121.9v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "doc" || _vm.thumb.extension === "docx"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm57.1 120H305c7.7 0 13.4 7.1 11.7 14.7l-38 168c-1.2 5.5-6.1 9.3-11.7 9.3h-38c-5.5 0-10.3-3.8-11.6-9.1-25.8-103.5-20.8-81.2-25.6-110.5h-.5c-1.1 14.3-2.4 17.4-25.6 110.5-1.3 5.3-6.1 9.1-11.6 9.1H117c-5.6 0-10.5-3.9-11.7-9.4l-37.8-168c-1.7-7.5 4-14.6 11.7-14.6h24.5c5.7 0 10.7 4 11.8 9.7 15.6 78 20.1 109.5 21 122.2 1.6-10.2 7.3-32.7 29.4-122.7 1.3-5.4 6.1-9.1 11.7-9.1h29.1c5.6 0 10.4 3.8 11.7 9.2 24 100.4 28.8 124 29.6 129.4-.2-11.2-2.6-17.8 21.6-129.2 1-5.6 5.9-9.5 11.5-9.5zM384 121.9v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "ppt" ||
+        _vm.thumb.extension === "pptx" ||
+        _vm.thumb.extension === "pptm"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M193.7 271.2c8.8 0 15.5 2.7 20.3 8.1 9.6 10.9 9.8 32.7-.2 44.1-4.9 5.6-11.9 8.5-21.1 8.5h-26.9v-60.7h27.9zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-153 31V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm53 165.2c0 90.3-88.8 77.6-111.1 77.6V436c0 6.6-5.4 12-12 12h-30.8c-6.6 0-12-5.4-12-12V236.2c0-6.6 5.4-12 12-12h81c44.5 0 72.9 32.8 72.9 77z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "xlsx" || _vm.thumb.extension === "xlsm"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm60.1 106.5L224 336l60.1 93.5c5.1 8-.6 18.5-10.1 18.5h-34.9c-4.4 0-8.5-2.4-10.6-6.3C208.9 405.5 192 373 192 373c-6.4 14.8-10 20-36.6 68.8-2.1 3.9-6.1 6.3-10.5 6.3H110c-9.5 0-15.2-10.5-10.1-18.5l60.3-93.5-60.3-93.5c-5.2-8 .6-18.5 10.1-18.5h34.8c4.4 0 8.5 2.4 10.6 6.3 26.1 48.8 20 33.6 36.6 68.5 0 0 6.1-11.7 36.6-68.5 2.1-3.9 6.2-6.3 10.6-6.3H274c9.5-.1 15.2 10.4 10.1 18.4zM384 121.9v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "csv"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm-96 144c0 4.42-3.58 8-8 8h-8c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h8c4.42 0 8 3.58 8 8v16c0 4.42-3.58 8-8 8h-8c-26.51 0-48-21.49-48-48v-32c0-26.51 21.49-48 48-48h8c4.42 0 8 3.58 8 8v16zm44.27 104H160c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h12.27c5.95 0 10.41-3.5 10.41-6.62 0-1.3-.75-2.66-2.12-3.84l-21.89-18.77c-8.47-7.22-13.33-17.48-13.33-28.14 0-21.3 19.02-38.62 42.41-38.62H200c4.42 0 8 3.58 8 8v16c0 4.42-3.58 8-8 8h-12.27c-5.95 0-10.41 3.5-10.41 6.62 0 1.3.75 2.66 2.12 3.84l21.89 18.77c8.47 7.22 13.33 17.48 13.33 28.14.01 21.29-19 38.62-42.39 38.62zM256 264v20.8c0 20.27 5.7 40.17 16 56.88 10.3-16.7 16-36.61 16-56.88V264c0-4.42 3.58-8 8-8h16c4.42 0 8 3.58 8 8v20.8c0 35.48-12.88 68.89-36.28 94.09-3.02 3.25-7.27 5.11-11.72 5.11s-8.7-1.86-11.72-5.11c-23.4-25.2-36.28-58.61-36.28-94.09V264c0-4.42 3.58-8 8-8h16c4.42 0 8 3.58 8 8zm121-159L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"
+                }
+              })
+            ]
+          )
+        ])
+      : _vm.thumb.extension === "css" ||
+        _vm.thumb.extension === "html" ||
+        _vm.thumb.extension === "php"
+      ? _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M384 121.941V128H256V0h6.059c6.365 0 12.47 2.529 16.971 7.029l97.941 97.941A24.005 24.005 0 0 1 384 121.941zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zM123.206 400.505a5.4 5.4 0 0 1-7.633.246l-64.866-60.812a5.4 5.4 0 0 1 0-7.879l64.866-60.812a5.4 5.4 0 0 1 7.633.246l19.579 20.885a5.4 5.4 0 0 1-.372 7.747L101.65 336l40.763 35.874a5.4 5.4 0 0 1 .372 7.747l-19.579 20.884zm51.295 50.479l-27.453-7.97a5.402 5.402 0 0 1-3.681-6.692l61.44-211.626a5.402 5.402 0 0 1 6.692-3.681l27.452 7.97a5.4 5.4 0 0 1 3.68 6.692l-61.44 211.626a5.397 5.397 0 0 1-6.69 3.681zm160.792-111.045l-64.866 60.812a5.4 5.4 0 0 1-7.633-.246l-19.58-20.885a5.4 5.4 0 0 1 .372-7.747L284.35 336l-40.763-35.874a5.4 5.4 0 0 1-.372-7.747l19.58-20.885a5.4 5.4 0 0 1 7.633-.246l64.866 60.812a5.4 5.4 0 0 1-.001 7.879z"
+                }
+              })
+            ]
+          )
+        ])
+      : _c("div", [
+          _c(
+            "svg",
+            {
+              staticClass: "w-12 text-gray-800 mx-auto",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 384 512"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  fill: "currentColor",
+                  d:
+                    "M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm64 236c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-64c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-72v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm96-114.1v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"
+                }
+              })
+            ]
+          )
+        ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -57535,6 +57862,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileComponent_vue_vue_type_template_id_2f25a5de___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileComponent_vue_vue_type_template_id_2f25a5de___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/vc/MediaFileThumbnailComponent.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/vc/MediaFileThumbnailComponent.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MediaFileThumbnailComponent_vue_vue_type_template_id_3d285f0d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d& */ "./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d&");
+/* harmony import */ var _MediaFileThumbnailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MediaFileThumbnailComponent.vue?vue&type=script&lang=js& */ "./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MediaFileThumbnailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MediaFileThumbnailComponent_vue_vue_type_template_id_3d285f0d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MediaFileThumbnailComponent_vue_vue_type_template_id_3d285f0d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/vc/MediaFileThumbnailComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileThumbnailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MediaFileThumbnailComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileThumbnailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileThumbnailComponent_vue_vue_type_template_id_3d285f0d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/vc/MediaFileThumbnailComponent.vue?vue&type=template&id=3d285f0d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileThumbnailComponent_vue_vue_type_template_id_3d285f0d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaFileThumbnailComponent_vue_vue_type_template_id_3d285f0d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

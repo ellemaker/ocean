@@ -19,6 +19,7 @@ class CreateMediaFilesTable extends Migration
             $table->string('alt')->nullable();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
+            $table->string('extension')->nullable();
             $table->integer('file_category_id')->default(1);
             $table->timestamps();
         });

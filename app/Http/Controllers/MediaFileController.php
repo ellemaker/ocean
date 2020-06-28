@@ -40,6 +40,7 @@ class MediaFileController extends Controller
             $filenameWithExt = $request->file->getClientOriginalName();
 
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $filename_ext = pathinfo($filenameWithExt, PATHINFO_EXTENSION);
 
             $checkingFile = MediaFile::where(['name' => $filename , 'file_category_id' => $request->category])->count();
 
@@ -51,6 +52,7 @@ class MediaFileController extends Controller
             $file->name = $filename;
             $file->alt = $filename;
             $file->title = $filename;
+            $file->extension = $filename_ext;
             $file->file_category_id = $request->category;
             $file->save();
 
