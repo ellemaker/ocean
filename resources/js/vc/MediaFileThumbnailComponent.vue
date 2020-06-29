@@ -1,7 +1,7 @@
 <template>
-	<!--	,,,php/css/html/js, -->
+	
 	<div>
-		<div v-if="thumb.extension === 'jpg' || thumb.extension === 'png' ">
+		<div v-if="thumb.extension === 'jpg' || thumb.extension === 'png' || thumb.extension === 'gif'">
     		<img :src="thumb.thumbnail" :alt="thumb.name" :title="thumb.name" class="max-w-full mx-auto">
     	</div>
 		<div v-else-if="thumb.extension === 'pdf'">

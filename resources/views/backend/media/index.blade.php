@@ -18,6 +18,7 @@
             media_dz_upload_url="{{ route('admin.media-file.store') }}"
             media_contents="{{ route('admin.media.contents') }}"
             media_remove_selected_files="{{ route('admin.media.destroy.files') }}"
+            media_update_file="{{ route('admin.media-file.update', 1) }}"
             media_store_folder="{{ route('admin.media-folder.store') }}"
             media_rename_folder="{{ route('admin.media-folder.update', 1) }}"
             media_delete_folder="{{ route('admin.media-folder.destroy', 1) }}">

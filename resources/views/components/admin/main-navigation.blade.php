@@ -37,7 +37,9 @@
 	                                </div>
 	                            </div>
 		                    </li>
-		                    <li><a href="{{ route('admin.media.index') }}" class="block py-2 px-4 text-sm font-medium rounded-md hover:bg-indigo-600">Media</a></li>
+		                    <li>
+		                    	<a href="{{ route('admin.media.index') }}" class="block py-2 px-4 text-sm font-medium rounded-md hover:bg-indigo-600  @if (Route::currentRouteName() === 'admin.media.index') bg-indigo-600 @endif">Media</a>
+		                    </li>
 		                    <li><a href="#" class="block py-2 px-4 text-sm font-medium rounded-md hover:bg-indigo-600">Web Apps</a></li>
 		                    <li><a href="#" class="block py-2 px-4 text-sm font-medium rounded-md hover:bg-indigo-600">CRM</a></li>
 		                    <li><a href="#" class="block py-2 px-4 text-sm font-medium rounded-md hover:bg-indigo-600">Store</a></li>

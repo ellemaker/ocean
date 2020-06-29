@@ -10806,12 +10806,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['media_dz_upload_url', 'media_contents', 'media_remove_selected_files', 'media_store_folder', 'media_rename_folder', 'media_delete_folder'],
+  props: ['media_dz_upload_url', 'media_contents', 'media_remove_selected_files', 'media_store_folder', 'media_rename_folder', 'media_delete_folder', 'media_update_file'],
   components: {
     MediaFile: _MediaFileComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     MediaFolder: _MediaFolderComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -11006,10 +11012,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
 /* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
-var _props$mounted$before;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -11063,9 +11065,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = (_props$mounted$before = {
-  props: ['file', 'fileView'],
-  mounted: function mounted() {},
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['file', 'fileView', 'fileUpdate'],
   beforeCreate: function beforeCreate() {
     this.$options.components.MediaFileThumb = __webpack_require__(/*! ./MediaFileThumbnailComponent.vue */ "./resources/js/vc/MediaFileThumbnailComponent.vue")["default"];
   },
@@ -11077,23 +11078,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       file_active: false,
       mfile_active: false
     };
+  },
+  mounted: function mounted() {},
+  methods: {
+    file_selected_function: function file_selected_function(file) {
+      if (file.extension === 'jpg' || file.extension === 'png' || file.extension === 'gif') {
+        this.file_active = !this.file_active;
+      }
+    },
+    file_unselect_function: function file_unselect_function() {
+      // click away function
+      this.file_active = false;
+    },
+    multi_file_select_function: function multi_file_select_function(file) {
+      this.mfile_active = !this.mfile_active;
+      this.$emit("fileLists", file);
+    },
+    cancel_file_selected: function cancel_file_selected(files) {
+      this.mfile_active = false;
+    },
+    file_update: function file_update() {
+      var _this = this;
+
+      var url = this.fileUpdate;
+      url = url.split('/');
+      url.pop();
+      url = url.toString().replace(/,/g, '/') + '/' + this.file.id;
+      var dataform = new FormData();
+      dataform.append('title', this.file.title);
+      dataform.append('alt', this.file.alt);
+      dataform.append("_method", 'PATCH');
+      axios.post(url, dataform).then(function (response) {
+        if (response.data.success) {
+          _this.file_active = !_this.file_active;
+          new Noty({
+            type: 'twSuccess',
+            title: 'Success',
+            text: 'Successfully created new folder name ' + response.data.folder.name
+          }).show();
+        }
+      });
+    }
   }
-}, _defineProperty(_props$mounted$before, "mounted", function mounted() {}), _defineProperty(_props$mounted$before, "methods", {
-  file_selected_function: function file_selected_function(file) {
-    this.file_active = !this.file_active;
-  },
-  file_unselect_function: function file_unselect_function() {
-    // click away function
-    this.file_active = false;
-  },
-  multi_file_select_function: function multi_file_select_function(file) {
-    this.mfile_active = !this.mfile_active;
-    this.$emit("fileLists", file);
-  },
-  cancel_file_selected: function cancel_file_selected(files) {
-    this.mfile_active = false;
-  }
-}), _props$mounted$before);
+});
 
 /***/ }),
 
@@ -44692,7 +44719,11 @@ var render = function() {
                 key: file.id,
                 ref: "myMediaFile",
                 refInFor: true,
-                attrs: { file: file, fileView: _vm.media.current_view },
+                attrs: {
+                  file: file,
+                  fileView: _vm.media.current_view,
+                  fileUpdate: _vm.media_update_file
+                },
                 on: { fileLists: _vm.file_lists_selected_function }
               })
             }),
@@ -44812,89 +44843,133 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "px-8 py-12" }, [
-            _c("form", { attrs: { action: "" } }, [
-              _c("div", { staticClass: "mb-8" }, [
-                _c(
-                  "label",
-                  {
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.file_update($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "mb-8" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass:
+                        "inline-block font-medium text-gray-700 text-sm",
+                      attrs: { for: "" }
+                    },
+                    [_vm._v("Title")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.file.title,
+                        expression: "file.title"
+                      }
+                    ],
                     staticClass:
-                      "inline-block font-medium text-gray-700 text-sm",
-                    attrs: { for: "" }
-                  },
-                  [_vm._v("Title")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass:
-                    "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.file.title }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-8" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "inline-block font-medium text-gray-700 text-sm",
-                    attrs: { for: "" }
-                  },
-                  [_vm._v("Alt")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass:
-                    "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.file.alt }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-8" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "inline-block font-medium text-gray-700 text-sm",
-                    attrs: { for: "" }
-                  },
-                  [_vm._v("Image URL")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass:
-                    "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.file.original }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-8 flex justify-between" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "capitalize bg-gray-200 font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-gray-300",
+                      "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
+                    attrs: { type: "text", required: "" },
+                    domProps: { value: _vm.file.title },
                     on: {
-                      click: function($event) {
-                        _vm.file_active = false
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.file, "title", $event.target.value)
                       }
                     }
-                  },
-                  [_vm._v("Cancel")]
-                ),
+                  })
+                ]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
+                _c("div", { staticClass: "mb-8" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass:
+                        "inline-block font-medium text-gray-700 text-sm",
+                      attrs: { for: "" }
+                    },
+                    [_vm._v("Alt")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.file.alt,
+                        expression: "file.alt"
+                      }
+                    ],
                     staticClass:
-                      "bg-indigo-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600"
-                  },
-                  [_vm._v("Save")]
-                )
-              ])
-            ])
+                      "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
+                    attrs: { type: "text", required: "" },
+                    domProps: { value: _vm.file.alt },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.file, "alt", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mb-8" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass:
+                        "inline-block font-medium text-gray-700 text-sm",
+                      attrs: { for: "" }
+                    },
+                    [_vm._v("Image URL")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass:
+                      "rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700",
+                    attrs: { type: "text", readonly: "" },
+                    domProps: { value: _vm.file.original }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mb-8 flex justify-between" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "capitalize bg-gray-200 font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-gray-300",
+                      on: {
+                        click: function($event) {
+                          _vm.file_active = false
+                        }
+                      }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "bg-indigo-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v("Save")]
+                  )
+                ])
+              ]
+            )
           ])
         ]
       )
@@ -44924,7 +44999,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.thumb.extension === "jpg" || _vm.thumb.extension === "png"
+    _vm.thumb.extension === "jpg" ||
+    _vm.thumb.extension === "png" ||
+    _vm.thumb.extension === "gif"
       ? _c("div", [
           _c("img", {
             staticClass: "max-w-full mx-auto",

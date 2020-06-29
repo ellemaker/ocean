@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\MediaFile;
 use Illuminate\Http\Request;
 
+use App\Http\Requests\Media\FileUpdateRequest;
+
 class MediaFileController extends Controller
 {
     /**
@@ -91,9 +93,13 @@ class MediaFileController extends Controller
      * @param  \App\MediaFile  $mediaFile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MediaFile $mediaFile)
+    public function update(FileUpdateRequest $request, MediaFile $mediaFile)
     {
-        //
+        $mediaFile->title = $request->title;
+        $mediaFile->alt = $request->alt;
+        $mediaFile->save();
+
+        return response()->json(['success'=>true]);
     }
 
     /**

@@ -25,24 +25,24 @@
 				<MediaFileThumb :thumb="file"></MediaFileThumb>
 			</header>
 			<div class="px-8 py-12">
-				<form action="">
+				<form @submit.prevent="file_update">
 					<div class="mb-8">
 						<label for="" class="inline-block font-medium text-gray-700 text-sm">Title</label>
-						<input type="text" class="rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700" :value="file.title">
+						<input type="text" class="rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700" v-model="file.title"  required>
 					</div>
 
 					<div class="mb-8">
 						<label for="" class="inline-block font-medium text-gray-700 text-sm">Alt</label>
-						<input type="text" class="rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700" :value="file.alt">
+						<input type="text" class="rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700" v-model="file.alt" required>
 					</div>
 					
 					<div class="mb-8">
 						<label for="" class="inline-block font-medium text-gray-700 text-sm">Image URL</label>
-						<input type="text" class="rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700" :value="file.original">
+						<input type="text" class="rounded border border-gray-500 w-full p-2 mt-1 text-sm appearance-none outline-none focus:border-indigo-700" :value="file.original" readonly="">
 					</div>
 					<div class="mb-8 flex justify-between">
 						<button class="capitalize bg-gray-200 font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-gray-300" @click="file_active = false">Cancel</button>
-						<button class="bg-indigo-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600">Save</button>
+						<button class="bg-indigo-500 text-white font-medium inline-block py-2 px-6 min-w-20 rounded text-sm hover:bg-indigo-600" type="submit">Save</button>
 					</div>
 				</form>
 			</div>
@@ -56,14 +56,11 @@
 
 	export default {
 
-		props: [ 'file', 'fileView' ],
-
-        mounted() {
-
-        },
+		props: [ 'file', 'fileView', 'fileUpdate'],
 
         beforeCreate(){
-        	this.$options.components.MediaFileThumb = require('./MediaFileThumbnailComponent.vue').default
+        	this.$options.components.MediaFileThumb = require('./MediaFileThumbnailComponent.vue').default;
+
         },
 
         directives: {
@@ -84,7 +81,9 @@
 
 		methods : {
 			file_selected_function(file){
-				this.file_active = !this.file_active;
+				if (file.extension === 'jpg' || file.extension === 'png' || file.extension === 'gif') {
+					this.file_active = !this.file_active;
+				}
 			},
 
 			file_unselect_function(){
@@ -99,6 +98,31 @@
 
 			cancel_file_selected(files){
 				this.mfile_active = false;
+			},
+
+			file_update(){
+				var url = this.fileUpdate;
+				url = url.split('/');
+				url.pop();
+				url = url.toString().replace(/,/g, '/') + '/' + this.file.id;
+
+				var dataform = new FormData();
+
+				dataform.append('title', this.file.title);
+				dataform.append('alt', this.file.alt);
+				dataform.append("_method", 'PATCH');
+
+				axios.post(url, dataform).then( response => {
+					if (response.data.success) {
+						this.file_active = !this.file_active;
+						new Noty({
+						  	type: 'twSuccess',
+						  	title: 'Success',
+						  	text: 'Successfully created new folder name ' + response.data.folder.name
+						}).show();
+					}
+				});
+				
 			}
 
 		}

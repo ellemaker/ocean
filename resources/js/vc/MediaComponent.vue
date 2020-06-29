@@ -97,7 +97,13 @@
 	                </div>
 
 	                <div class="file-lists flex flex-wrap items-stretch -mx-2">
-	                    <MediaFile v-for="file in media.files" :key="file.id" :file="file" :fileView="media.current_view" @fileLists="file_lists_selected_function" ref="myMediaFile">	                    	
+	                    <MediaFile v-for="file in media.files" 
+	                    	:key="file.id" 
+	                    	:file="file" 
+	                    	:fileView="media.current_view"
+	                    	:fileUpdate="media_update_file"
+	                    	@fileLists="file_lists_selected_function" 
+	                    	ref="myMediaFile">	                    	
 	                    </MediaFile>
 	                </div>
 	            </div>
@@ -126,7 +132,8 @@
             'media_remove_selected_files',
             'media_store_folder',
             'media_rename_folder',
-            'media_delete_folder'
+            'media_delete_folder',
+            'media_update_file'
         ],
 
         components : {
@@ -282,10 +289,8 @@
 			create_folder_form_submit(){
 				var dataform = new FormData();
 
-
-
-				dataform.append('name', this.create_folder_form.form_fields.name)
-				dataform.append('parent', this.media.current_directory.id)
+				dataform.append('name', this.create_folder_form.form_fields.name);
+				dataform.append('parent', this.media.current_directory.id);
 
 				axios.post(this.media_store_folder, dataform).then( response => {
                    	if (response.data.success) {
